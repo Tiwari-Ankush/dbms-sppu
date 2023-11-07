@@ -8,6 +8,14 @@ insert into stud_tab values(2,'Soham','IT','2002-09-03','Nashik');
 insert into stud_tab values(3,'Ramesh','Comp','2002-03-19','Pune');
 insert into stud_tab values(4,'Mohan','AI&DS','2002-02-22','Nagpur');
 select * from stud_tab;
+
+ALTER TABLE stud_tab
+ADD PRIMARY KEY (stud_id);
+
+ALTER TABLE stud_tab
+ADD CONSTRAINT fk_stud_dept
+FOREIGN KEY (stud_dept) REFERENCES departments(department_id);
+
 alter table stud_tab add shift varchar(10);
 update stud_tab set shift='first' where stud_id=1;
 update stud_tab set shift='second' where stud_id=2;
