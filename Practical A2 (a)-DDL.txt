@@ -4,6 +4,14 @@ use employee;
 create table emp_details(emp_no int(10),emp_name varchar(30),emp_gender varchar(1),emp_sal int(30));
 show tables;
 alter table emp_details add emp_dept varchar(20);
+
+ALTER TABLE emp_details
+ADD PRIMARY KEY (emp_no);
+
+ALTER TABLE emp_details
+ADD CONSTRAINT fk_emp_dept
+FOREIGN KEY (emp_dept) REFERENCES departments(department_id);
+
 desc emp_details;
 insert into emp_details values(1,'Ram','M',300000,'designing');
 insert into emp_details values(2,'Soham','M',300000,'designing');
