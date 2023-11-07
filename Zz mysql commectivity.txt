@@ -1,0 +1,95 @@
+__________________________________ connect.py _______________________________________________
+
+#To connect MySQL with python we require a python driver named as "mysql.connector"
+
+#To install use code: sudo apt install python3-mysql.connector
+
+import mysql.connector as c
+
+con = c.connect(host = 'localhost', user = 'root', password = 'aman1536', database = 'arman')
+
+if con.is_connected():
+
+ print('mysql successfully connected')
+
+else:
+
+ print('some connectivity issue')
+
+ 
+
+__________________________________________________________________________________________________
+
+____________________________________ insert.py _________________________________________________
+
+# inserting data into table
+
+import mysql.connector as c
+
+con = c.connect(host = 'localhost', user = 'root', password = 'aman1536', database = 'arman')
+
+cursor=con.cursor()
+
+eid =int(input(" Enter eid "))
+
+name = input(" Enter name ")
+
+salary = int(input(" Enter salary "))
+
+query = " insert into tab values({}, '{}', {}) ".format(eid, name, salary)
+
+cursor.execute(query)
+
+con.commit()
+
+print("Data inserted successfully")
+
+____________________________________________________________________________________________________
+
+__________________________________ update.py 
+
+_____________________________________________________
+
+# update 
+
+import mysql.connector as c
+
+con = c.connect(host = 'localhost', user = 'root', password = 'aman1536', database = 'arman')
+
+cursor = con.cursor()
+
+salary = int(input(" Enter updated salary "))
+
+eid =int(input(" Enter eid "))
+
+query = 'update tab set salary = {} where eid = {}'.format(salary, eid)
+
+cursor.execute(query)
+
+con.commit()
+
+____________________________________________________________________________________________________
+
+_________________________________ delete.py 
+
+______________________________________________________
+
+import mysql.connector as c
+
+con = c.connect(host = 'localhost', user = 'root', password = 'aman1536', database = 'arman')
+
+cursor = con.cursor()
+
+eid = int(input(" enter eid "))
+
+query = 'delete from tab where eid = {}'.format(eid)
+
+cursor.execute(query)
+
+con.commit()
+
+___________________________________________________________________________________________________
+
+_______________________________ end of program 
+
+___________________________________________________
