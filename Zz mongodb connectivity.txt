@@ -1,0 +1,213 @@
+# create files
+
+___________________________________________________________________________________________
+
+_______________________________ create.py _______________________________________________
+
+#connect and create database
+
+# MongoDb Connectivity
+
+#To create a database we have to create at least one collection with at least one inserted document 
+
+import pymongo
+
+if __name__ == "__main__":
+
+ print("Welcome to pyMongo")
+
+ client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+
+ print(client)
+
+ 
+
+ #Creating a database
+
+ db = client['harry']
+
+ collection = db['coder']
+
+ dictionary = {'roll_no':1,'name':'aman', 'hobby':'reading'}
+
+ collection.insert_one(dictionary)
+
+ 
+
+____________________________________________________________________________________________
+
+__________________________________ showdbs.py ____________________________________________
+
+import pymongo
+
+if __name__ == "__main__":
+
+ print("Welcome to pyMongo")
+
+ client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+
+ print(client)
+
+ alldbs = client.list_database_names()
+
+ print(alldbs)
+
+ 
+
+ #show collections
+
+ col = client['harry']
+
+ print(col.list_collection_names())
+
+ 
+
+__________________________________________________________________________________________
+
+______________________________ insert.py _______________________________________________
+
+#Inset operations
+
+import pymongo
+
+if __name__ == "__main__":
+
+ print("Welcome to pyMongo")
+
+ client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+
+ print(client)
+
+ db = client['harry']
+
+ collection = db['coder']
+
+ dictionary2 = {'roll_no':2, 'name':'arman', 'hobby':'writing'}
+
+ collection.insert_one(dictionary2)
+
+ allthese = [{'roll_no':3, 'name':'amit', 'hobby':'coding'},{'roll_no':4, 'name':'anand', 'hobby':'drawing'}]
+
+ collection.insert_many(allthese)
+
+ 
+
+_______________________________________________________________________________________
+
+______________________________ read.py ______________________________________________
+
+import pymongo
+
+if __name__ == "__main__":
+
+
+print("Welcome to pyMongo")
+
+ client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+
+ print(client)
+
+ #use the database named harry
+
+ db = client['harry']
+
+ collection = db['coder']
+
+ 
+
+ #for one document
+
+ one = collection.find_one({'name':'amit'})
+
+ print(one)
+
+ 
+
+ #for many documents 
+
+ alldocs = collection.find()
+
+ for item in alldocs:
+
+ print(item)
+
+ 
+
+_____________________________________________________________________________________________
+
+_________________________________ update.py _______________________________________________
+
+import pymongo
+
+if __name__ == "__main__":
+
+ print("Welcome to pyMongo")
+
+ client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+
+ print(client)
+
+ db = client['harry']
+
+ collection = db['coder']
+
+ 
+
+ #update one
+
+ refield = {'name':'amit'}
+
+ setfield = {'$set':{'hobby':'surfing'}}
+
+ collection.update_one(refield, setfield)
+
+ 
+
+ #if you want to update many use update_many in place of update_one
+
+ refield = {'name':'arman'}
+
+ setfield = {'$set':{'hobby':'riding'}}
+
+ collection.update_many(refield, setfield)
+
+ 
+
+ 
+
+_______________________________________________________________________________________
+
+_________________________________ delete.py _________________________________________
+
+import pymongo
+
+if __name__ == "__main__":
+
+ print("Welcome to pyMongo")
+
+ client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+
+ print(client)
+
+ db = client['harry']
+
+ collection = db['coder']
+
+ 
+
+ #delete one record
+
+ rec = {'name':'amit'}
+
+ collection.delete_one(rec)
+
+ 
+
+ #delete many record
+
+ rec2 = {'name':'arman'}
+
+ collection.delete_many(rec2)
+
+
+------ end of program -----
