@@ -1,0 +1,128 @@
+admin> show dbs
+0});
+db.cust_table.insert({Item_id:4,Cust_Name:"Shivam",Product:"Mentos",Amount:10});
+db.cust_table.insert({Item_id:5,Cust_Name:"Mohan",Product:"Maggie",Amount:60});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$sum:"$Amount"}}});
+admin    40.00 KiB
+book     40.00 KiB
+config  108.00 KiB
+local    72.00 KiB
+admin> use customer
+switched to db customer
+customer> db.cust_table.insert({Item_id:1,Cust_Name:"Ram",Product:"Milk",Amount:40});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$avg:"$Amount"}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$min:"$Amount"}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$max:"$Amount"}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$first:"$Amount"}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$last:"$Amount"}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$push:"$Amount"}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$sum:1}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$addToSet:"$Amount"}}});
+db.cust_table.createIndex({'Item_id':1})
+db.cust_table.createIndex({'Item_id':2})
+db.cust_table.createIndex({'Item_id':4})
+db.cust_table.getIndexes()
+db.cust_table.dropIndex({'Item_id':4})
+db.cust_table.dropIndex({'Item_id':1})
+db.cust_table.getIndexes()
+db.cust_table.getIndexes()
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b2e00134d1ab236addc") }
+}
+customer> db.cust_table.insert({Item_id:2,Cust_Name:"Ram",Product:"Parle_G",Amount:50});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b2e00134d1ab236addd") }
+}
+customer> db.cust_table.insert({Item_id:3,Cust_Name:"Mohan",Product:"Lays Chips",Amount:40});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b2e00134d1ab236adde") }
+}
+customer> db.cust_table.insert({Item_id:4,Cust_Name:"Shivam",Product:"Mentos",Amount:10});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b2e00134d1ab236addf") }
+}
+customer> db.cust_table.insert({Item_id:5,Cust_Name:"Mohan",Product:"Maggie",Amount:60});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b2e00134d1ab236ade0") }
+}
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$avg:"$Amount"}}});
+[
+  { _id: 'Mohan', total: 50 },
+  { _id: 'Shivam', total: 10 },
+  { _id: 'Ram', total: 45 }
+]
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$min:"$Amount"}}});
+[
+  { _id: 'Mohan', total: 40 },
+  { _id: 'Ram', total: 40 },
+  { _id: 'Shivam', total: 10 }
+]
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$max:"$Amount"}}});
+[
+  { _id: 'Mohan', total: 60 },
+  { _id: 'Shivam', total: 10 },
+  { _id: 'Ram', total: 50 }
+]
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$first:"$Amount"}}});
+[
+  { _id: 'Mohan', total: 40 },
+  { _id: 'Shivam', total: 10 },
+  { _id: 'Ram', total: 40 }
+]
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$last:"$Amount"}}});
+[
+  { _id: 'Ram', total: 50 },
+  { _id: 'Shivam', total: 10 },
+  { _id: 'Mohan', total: 60 }
+]
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$push:"$Amount"}}});
+[
+  { _id: 'Ram', total: [ 40, 50 ] },
+  { _id: 'Shivam', total: [ 10 ] },
+  { _id: 'Mohan', total: [ 40, 60 ] }
+]
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$sum:1}}});
+[
+  { _id: 'Ram', total: 2 },
+  { _id: 'Shivam', total: 1 },
+  { _id: 'Mohan', total: 2 }
+]
+customer> db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$addToSet:"$Amount"}}});
+[
+  { _id: 'Mohan', total: [ 60, 40 ] },
+  { _id: 'Shivam', total: [ 10 ] },
+  { _id: 'Ram', total: [ 50, 40 ] }
+]
+customer> db.cust_table.createIndex({'Item_id':1})
+Item_id_1
+customer> db.cust_table.createIndex({'Item_id':2})
+Item_id_2
+customer> db.cust_table.createIndex({'Item_id':4})
+Item_id_4
+customer> db.cust_table.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { Item_id: 1 }, name: 'Item_id_1' },
+  { v: 2, key: { Item_id: 2 }, name: 'Item_id_2' },
+  { v: 2, key: { Item_id: 4 }, name: 'Item_id_4' }
+]
+customer> db.cust_table.dropIndex({'Item_id':4})
+{ nIndexesWas: 4, ok: 1 }
+customer> db.cust_table.dropIndex({'Item_id':1})
+{ nIndexesWas: 3, ok: 1 }
+customer> db.cust_table.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { Item_id: 2 }, name: 'Item_id_2' }
+]
+customer> db.cust_table.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { Item_id: 2 }, name: 'Item_id_2' }
+]
+customer>

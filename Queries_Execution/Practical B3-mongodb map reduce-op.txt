@@ -1,0 +1,92 @@
+customer> show dbs
+D:"B123",Product:"Mentos",Amount:10,Status:"P"});
+db.pay.insert({Cust_ID:"B123",Product:"Maggie",Amount:60,Status:"NP"});
+db.pay.find()
+db.pay.mapReduce(function(){emit(this.Cust_ID,this.Amount);},function(key,values){return Array.sum(values)},{query:{"Status":"NP"},out:"Bill_Amount"})
+var mapFunc1=function(){emit(this.Cust_ID,this.Amount);};
+admin      40.00 KiBtion(keyCustID,valuePrices){return Array.sum(valuePrices);};
+book       40.00 KiB
+config    108.00 KiB
+customer   60.00 KiB
+local      72.00 KiB
+customer> use bill
+switched to db bill
+bill> db.pay.insert({Cust_ID:"A123",Product:"Milk",Amount:40,Status:"P"});
+db.pay.mapReduce(mapFunc1,reduceFunc1,{out:"Map"})
+db.Bill_Amount.find()
+db.Map.find()
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b5400134d1ab236ade1") }
+}
+bill> db.pay.insert({Cust_ID:"A123",Product:"Parle_G",Amount:50,Status:"NP"});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b5500134d1ab236ade2") }
+}
+bill> db.pay.insert({Cust_ID:"A123",Product:"Lays Chips",Amount:40,Status:"P"});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b5500134d1ab236ade3") }
+}
+bill> db.pay.insert({Cust_ID:"B123",Product:"Mentos",Amount:10,Status:"P"});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b5500134d1ab236ade4") }
+}
+bill> db.pay.insert({Cust_ID:"B123",Product:"Maggie",Amount:60,Status:"NP"});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("65523b5500134d1ab236ade5") }
+}
+bill> db.pay.find()
+[
+  {
+    _id: ObjectId("65523b5400134d1ab236ade1"),
+    Cust_ID: 'A123',
+    Product: 'Milk',
+    Amount: 40,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId("65523b5500134d1ab236ade2"),
+    Cust_ID: 'A123',
+    Product: 'Parle_G',
+    Amount: 50,
+    Status: 'NP'
+  },
+  {
+    _id: ObjectId("65523b5500134d1ab236ade3"),
+    Cust_ID: 'A123',
+    Product: 'Lays Chips',
+    Amount: 40,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId("65523b5500134d1ab236ade4"),
+    Cust_ID: 'B123',
+    Product: 'Mentos',
+    Amount: 10,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId("65523b5500134d1ab236ade5"),
+    Cust_ID: 'B123',
+    Product: 'Maggie',
+    Amount: 60,
+    Status: 'NP'
+  }
+]
+bill> db.pay.mapReduce(function(){emit(this.Cust_ID,this.Amount);},function(key,values){return Array.sum(values)},{query:{"Status":"NP"},out:"Bill_Amount"})
+DeprecationWarning: Collection.mapReduce() is deprecated. Use an aggregation instead.
+See https://docs.mongodb.com/manual/core/map-reduce for details.
+{ result: 'Bill_Amount', ok: 1 }
+bill> var mapFunc1=function(){emit(this.Cust_ID,this.Amount);};
+
+bill> db.pay.mapReduce(mapFunc1,reduceFunc1,{out:"Map"})
+ReferenceError: reduceFunc1 is not defined
+bill> db.Bill_Amount.find()
+[ { _id: 'A123', value: 50 }, { _id: 'B123', value: 60 } ]
+bill> db.Map.find()
+
+bill>

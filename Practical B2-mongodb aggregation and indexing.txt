@@ -11,7 +11,7 @@ db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$min:"$Amount"}}});
 db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$max:"$Amount"}}});
 db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$first:"$Amount"}}});
 db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$last:"$Amount"}}});
-db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$psuh:"$Amount"}}});
+db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$push:"$Amount"}}});
 db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$sum:1}}});
 db.cust_table.aggregate({$group:{_id:"$Cust_Name","total":{$addToSet:"$Amount"}}});
 db.cust_table.createIndex({'Item_id':1})
