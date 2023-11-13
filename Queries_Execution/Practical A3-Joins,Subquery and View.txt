@@ -1,0 +1,207 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| student            |
+| sys                |
+| telephone_db       |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> create database customer;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| customer           |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| student            |
+| sys                |
+| telephone_db       |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> use customer;
+Database changed
+mysql> create table cust_tab(id int(4),name varchar(20),quantity int(4),price int(10),item varchar(20));
+Query OK, 0 rows affected, 3 warnings (0.06 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_customer |
++--------------------+
+| cust_tab           |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> create table cust_info(id int(4),name varchar(20),address varchar(20),mobile varchar(20));
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> desc cust_tab;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | int         | YES  |     | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| quantity | int         | YES  |     | NULL    |       |
+| price    | int         | YES  |     | NULL    |       |
+| item     | varchar(20) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc cust_info;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
+| mobile  | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table cust_tab add primary key(id);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table cust_info add foreign key(id) references cust_tab(id);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into cust_tab values(1,'Ram',1,15,'Milk');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cust_tab values(2,'Soham',2,20,'Toast');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cust_tab values(3,'Mohan',4,5,'Parle-G');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cust_tab values(4,'Om',2,20,'Coca Cola');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from cust_tab;
++----+-------+----------+-------+-----------+
+| id | name  | quantity | price | item      |
++----+-------+----------+-------+-----------+
+|  1 | Ram   |        1 |    15 | Milk      |
+|  2 | Soham |        2 |    20 | Toast     |
+|  3 | Mohan |        4 |     5 | Parle-G   |
+|  4 | Om    |        2 |    20 | Coca Cola |
++----+-------+----------+-------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> alter table cust_tab add totalprice int(4);
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> update cust_tab set totalprice=quantity*price where id=1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update cust_tab set totalprice=quantity*price where id=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update cust_tab set totalprice=quantity*price where id=3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update cust_tab set totalprice=quantity*price where id=4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from cust_tab;
++----+-------+----------+-------+-----------+------------+
+| id | name  | quantity | price | item      | totalprice |
++----+-------+----------+-------+-----------+------------+
+|  1 | Ram   |        1 |    15 | Milk      |         15 |
+|  2 | Soham |        2 |    20 | Toast     |         40 |
+|  3 | Mohan |        4 |     5 | Parle-G   |         20 |
+|  4 | Om    |        2 |    20 | Coca Cola |         40 |
++----+-------+----------+-------+-----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into cust_info values(1,'Ram','Pune','9943569081');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cust_info values(2,'Soham','Pune','9978491281');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cust_info values(3,'Mohan','Nashik','8782356712');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into cust_info values(4,'Om','Nagpur','7823450189');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from cust_info;
++------+-------+---------+------------+
+| id   | name  | address | mobile     |
++------+-------+---------+------------+
+|    1 | Ram   | Pune    | 9943569081 |
+|    2 | Soham | Pune    | 9978491281 |
+|    3 | Mohan | Nashik  | 8782356712 |
+|    4 | Om    | Nagpur  | 7823450189 |
++------+-------+---------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select cust_tab.id,cust_tab.name,cust_tab.item,cust_info.address from cust_tab inner join cust_info on cust_tab.id=cust_info.id;
++----+-------+-----------+---------+
+| id | name  | item      | address |
++----+-------+-----------+---------+
+|  1 | Ram   | Milk      | Pune    |
+|  2 | Soham | Toast     | Pune    |
+|  3 | Mohan | Parle-G   | Nashik  |
+|  4 | Om    | Coca Cola | Nagpur  |
++----+-------+-----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select cust_tab.id,cust_tab.name,cust_tab.item,cust_info.address from cust_tab left outer join cust_info on cust_tab.id=cust_info.id;
++----+-------+-----------+---------+
+| id | name  | item      | address |
++----+-------+-----------+---------+
+|  1 | Ram   | Milk      | Pune    |
+|  2 | Soham | Toast     | Pune    |
+|  3 | Mohan | Parle-G   | Nashik  |
+|  4 | Om    | Coca Cola | Nagpur  |
++----+-------+-----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select cust_tab.id,cust_tab.name,cust_tab.item,cust_info.address from cust_tab right outer join cust_info on cust_tab.id=cust_info.id;
++------+-------+-----------+---------+
+| id   | name  | item      | address |
++------+-------+-----------+---------+
+|    1 | Ram   | Milk      | Pune    |
+|    2 | Soham | Toast     | Pune    |
+|    3 | Mohan | Parle-G   | Nashik  |
+|    4 | Om    | Coca Cola | Nagpur  |
++------+-------+-----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> create view mul_view as select cust_tab.id,cust_tab.name,cust_info.address from cust_tab,cust_info where cust_info.id=cust_tab.id;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from mul_view;
++----+-------+---------+
+| id | name  | address |
++----+-------+---------+
+|  1 | Ram   | Pune    |
+|  2 | Soham | Pune    |
+|  3 | Mohan | Nashik  |
+|  4 | Om    | Nagpur  |
++----+-------+---------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql>

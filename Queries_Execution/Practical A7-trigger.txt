@@ -1,0 +1,94 @@
+mysql> create database lib;
+    -> use lib;
+    -> create table library(bno int(5),bname varchar(40),author varchar(20),allowed_days int(5));
+    -> create table library_audit(bno int(5),old_all_days int(5),new_all_days int(5));
+    -> insert into library values(1,'Database Systems','Yash Marane',10);
+    -> insert into library values(2,'System Programming','Abhishek',20);
+    -> insert into library values(3,'Computer Network & Internet','Kapil',18);
+    -> insert into library values(4,'Project Management','Hariom',24);
+    -> insert into library values(5,'Python for Data Analysis','Tanmay',12);
+    -> select * from library;
+    -> delimiter //
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+Query OK, 0 rows affected, 3 warnings (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
++------+-----------------------------+-------------+--------------+
+| bno  | bname                       | author      | allowed_days |
++------+-----------------------------+-------------+--------------+
+|    1 | Database Systems            | Yash Marane |           10 |
+|    2 | System Programming          | Abhishek    |           20 |
+|    3 | Computer Network & Internet | Kapil       |           18 |
+|    4 | Project Management          | Hariom      |           24 |
+|    5 | Python for Data Analysis    | Tanmay      |           12 |
++------+-----------------------------+-------------+--------------+
+5 rows in set (0.09 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'delimiter' at line 1
+mysql> create trigger tr1
+    -> before update on library
+    -> for each row
+    -> begin
+    -> insert into library_audit values(new.bno,old.allowed_days,new.allowed_days);
+    -> end //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update library set allowed_days=15 where bno=1; //
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update library set allowed_days=25 where bno=2; //
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update library set allowed_days=13 where bno=3; //
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update library set allowed_days=19 where bno=4; //
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update library set allowed_days=17 where bno=5; //
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from library; //
++------+-----------------------------+-------------+--------------+
+| bno  | bname                       | author      | allowed_days |
++------+-----------------------------+-------------+--------------+
+|    1 | Database Systems            | Yash Marane |           15 |
+|    2 | System Programming          | Abhishek    |           25 |
+|    3 | Computer Network & Internet | Kapil       |           13 |
+|    4 | Project Management          | Hariom      |           19 |
+|    5 | Python for Data Analysis    | Tanmay      |           17 |
++------+-----------------------------+-------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from library_audit; //
++------+--------------+--------------+
+| bno  | old_all_days | new_all_days |
++------+--------------+--------------+
+|    1 |           10 |           15 |
+|    2 |           20 |           25 |
+|    3 |           18 |           13 |
+|    4 |           24 |           19 |
+|    5 |           12 |           17 |
++------+--------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql>

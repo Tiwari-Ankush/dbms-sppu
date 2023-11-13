@@ -1,0 +1,188 @@
+
+mysql> create database class;
+    -> use class;
+    -> create table O_RollCall(roll_no int(3),name varchar(20));
+    -> create table N_RollCall(roll_no int(3),name varchar(20));
+    -> insert into O_RollCall values (1,'Himanshu');
+    -> insert into O_RollCall values (2,'Ram');
+    -> insert into O_RollCall values (3,'Soham');
+    -> insert into O_RollCall values (5,'Mohan');
+    -> insert into O_RollCall values (6,'Om');
+    -> insert into O_RollCall values (9,'Yash');
+    -> insert into O_RollCall values (11,'Mayur');
+    -> select * from O_RollCall;
+    -> select * from N_RollCall;
+    -> delimiter //
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+Query OK, 1 row affected (0.07 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
++---------+----------+
+| roll_no | name     |
++---------+----------+
+|       1 | Himanshu |
+|       2 | Ram      |
+|       3 | Soham    |
+|       5 | Mohan    |
+|       6 | Om       |
+|       9 | Yash     |
+|      11 | Mayur    |
++---------+----------+
+7 rows in set (0.08 sec)
+
+Empty set (0.09 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'delimiter' at line 1
+mysql> create procedure cursor_proc_p1()
+    -> begin
+    -> declare fin integer default 0;
+    -> declare old_roll int(3);
+    -> declare old_name varchar(20);
+    -> declare new_roll int(3);
+    -> declare old_csr cursor for select roll_no,name from O_RollCall;
+    -> declare new_csr cursor for select roll_no from N_RollCall;
+    -> declare continue handler for not found set fin=1;
+    -> open old_csr;
+    -> open new_csr;
+    -> ss:loop
+    -> fetch old_csr into old_roll,old_name;
+    -> fetch new_csr into new_roll;
+    -> if fin=1 then
+    -> leave ss;
+    -> end if;
+    -> if old_roll<>new_roll then
+    -> insert into N_RollCall values(old_roll,old_name);
+    -> end if;
+    -> end loop;
+    -> close old_csr;
+    -> close new_csr;
+    -> end //
+Query OK, 0 rows affected, 2 warnings (0.00 sec)
+
+mysql> create procedure cursor_proc_p2(in r1 int)
+    -> begin
+    -> declare r2 int;
+    -> declare exit_loop boolean;
+    -> declare c1 cursor for select roll_no from O_RollCall
+    -> where roll_no>r1;
+    -> declare continue handler for not found set
+    -> exit_loop=true;
+    -> open c1;
+    -> e_loop:loop
+    -> fetch c1 into r2;
+    -> if not exists(select * from N_RollCall where roll_no=r2)
+    -> then
+    -> insert into N_RollCall select * from O_RollCall where roll_no=r2;
+    -> end if;
+    -> if exit_loop
+    -> then
+    -> close c1;
+    -> leave e_loop;
+    -> end if;
+    -> end loop e_loop;
+    -> end;//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call cursor_proc_p2(5); //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from O_RollCall; //
++---------+----------+
+| roll_no | name     |
++---------+----------+
+|       1 | Himanshu |
+|       2 | Ram      |
+|       3 | Soham    |
+|       5 | Mohan    |
+|       6 | Om       |
+|       9 | Yash     |
+|      11 | Mayur    |
++---------+----------+
+7 rows in set (0.00 sec)
+
+mysql> select * from N_RollCall; //
++---------+-------+
+| roll_no | name  |
++---------+-------+
+|       6 | Om    |
+|       9 | Yash  |
+|      11 | Mayur |
++---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> call cursor_proc_p2(3); //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call cursor_proc_p1(); //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from O_RollCall; //
++---------+----------+
+| roll_no | name     |
++---------+----------+
+|       1 | Himanshu |
+|       2 | Ram      |
+|       3 | Soham    |
+|       5 | Mohan    |
+|       6 | Om       |
+|       9 | Yash     |
+|      11 | Mayur    |
++---------+----------+
+7 rows in set (0.00 sec)
+
+mysql> select * from N_RollCall; //
++---------+----------+
+| roll_no | name     |
++---------+----------+
+|       6 | Om       |
+|       9 | Yash     |
+|      11 | Mayur    |
+|       5 | Mohan    |
+|       1 | Himanshu |
+|       2 | Ram      |
+|       3 | Soham    |
++---------+----------+
+7 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

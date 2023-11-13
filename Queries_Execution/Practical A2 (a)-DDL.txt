@@ -1,0 +1,168 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| telephone_db       |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> create database employee;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use employee;
+Database changed
+mysql> create table emp_details(emp_no int(10),emp_name varchar(30),emp_gender varchar(1),emp_sal int(30));
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_employee |
++--------------------+
+| emp_details        |
++--------------------+
+1 row in set (0.01 sec)
+
+mysql> alter table emp_details add emp_dept varchar(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> ALTER TABLE emp_details
+    -> ADD PRIMARY KEY (emp_no);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> ALTER TABLE emp_details
+    -> ADD CONSTRAINT fk_emp_dept
+    -> FOREIGN KEY (emp_dept) REFERENCES departments(department_id);
+ERROR 1824 (HY000): Failed to open the referenced table 'departments'
+mysql>
+mysql> desc emp_details;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| emp_no     | int         | NO   | PRI | NULL    |       |
+| emp_name   | varchar(30) | YES  |     | NULL    |       |
+| emp_gender | varchar(1)  | YES  |     | NULL    |       |
+| emp_sal    | int         | YES  |     | NULL    |       |
+| emp_dept   | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> insert into emp_details values(1,'Ram','M',300000,'designing');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp_details values(2,'Soham','M',300000,'designing');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp_details values(3,'Mohan','M',250000,'management');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp_details values(4,'Om','M',400000,'coding');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from emp_details;
++--------+----------+------------+---------+------------+
+| emp_no | emp_name | emp_gender | emp_sal | emp_dept   |
++--------+----------+------------+---------+------------+
+|      1 | Ram      | M          |  300000 | designing  |
+|      2 | Soham    | M          |  300000 | designing  |
+|      3 | Mohan    | M          |  250000 | management |
+|      4 | Om       | M          |  400000 | coding     |
++--------+----------+------------+---------+------------+
+4 rows in set (0.00 sec)
+
+mysql> create table emp_info as select emp_no,emp_name,emp_gender from emp_details;
+Query OK, 4 rows affected (0.04 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp_info;
++--------+----------+------------+
+| emp_no | emp_name | emp_gender |
++--------+----------+------------+
+|      1 | Ram      | M          |
+|      2 | Soham    | M          |
+|      3 | Mohan    | M          |
+|      4 | Om       | M          |
++--------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> truncate table emp_info;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from emp_info;
+Empty set (0.00 sec)
+
+mysql> drop table emp_info;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from emp_info;
+ERROR 1146 (42S02): Table 'employee.emp_info' doesn't exist
+mysql> create view emp_view1 as select * from emp_details;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create view emp_view2 as select * from emp_details where emp_dept="designing";
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from emp_view1;
++--------+----------+------------+---------+------------+
+| emp_no | emp_name | emp_gender | emp_sal | emp_dept   |
++--------+----------+------------+---------+------------+
+|      1 | Ram      | M          |  300000 | designing  |
+|      2 | Soham    | M          |  300000 | designing  |
+|      3 | Mohan    | M          |  250000 | management |
+|      4 | Om       | M          |  400000 | coding     |
++--------+----------+------------+---------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp_view2;
++--------+----------+------------+---------+-----------+
+| emp_no | emp_name | emp_gender | emp_sal | emp_dept  |
++--------+----------+------------+---------+-----------+
+|      1 | Ram      | M          |  300000 | designing |
+|      2 | Soham    | M          |  300000 | designing |
++--------+----------+------------+---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> update emp_details set emp_dept="coding" where emp_name="Mohan";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emp_details;
++--------+----------+------------+---------+-----------+
+| emp_no | emp_name | emp_gender | emp_sal | emp_dept  |
++--------+----------+------------+---------+-----------+
+|      1 | Ram      | M          |  300000 | designing |
+|      2 | Soham    | M          |  300000 | designing |
+|      3 | Mohan    | M          |  250000 | coding    |
+|      4 | Om       | M          |  400000 | coding    |
++--------+----------+------------+---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> drop view emp_view1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop view emp_view2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create index emp_ind on emp_details(emp_no,emp_name);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show index from emp_details;
++-------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table       | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| emp_details |          0 | PRIMARY  |            1 | emp_no      | A         |           2 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| emp_details |          1 | emp_ind  |            1 | emp_no      | A         |           4 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| emp_details |          1 | emp_ind  |            2 | emp_name    | A         |           4 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++-------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+3 rows in set (0.01 sec)
+
+mysql>
